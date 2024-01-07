@@ -2,7 +2,7 @@
 
 Build a RFID system using raspberry pi 3B+
 
-
+![Entire System](image/rpi_system.png)
 
 ### Compiler
 U-Boot: aarch64-linux-gnu-gcc
