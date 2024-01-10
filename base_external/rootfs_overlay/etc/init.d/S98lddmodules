@@ -1,0 +1,90 @@
+#!/bin/sh
+
+case "$1" in
+    start)
+	echo "Loading scull driver"
+	modprobe scull
+
+	# retrieve major number
+	major=$(awk "\$2==\"scull\" {print \$1}" /proc/devices)
+	echo "scull major number $major"
+
+	# Remove stale nodes and replace them, then give gid and perms
+	# Usually the script is shorter, it's scull that has several devices in it.
+	rm -f /dev/scull[0-3]
+	mknod /dev/scull0 c $major 0
+	mknod /dev/scull1 c $major 1
+	mknod /dev/scull2 c $major 2
+	mknod /dev/scull3 c $major 3
+	ln -sf scull0 /dev/scull
+	chgrp staff /dev/scull[0-3]
+	chmod 664 /dev/scull[0-3]
+
+	rm -f /dev/scullpipe[0-3]
+	mknod /dev/scullpipe0 c $major 4
+	mknod /dev/scullpipe1 c $major 5
+	mknod /dev/scullpipe2 c $major 6
+	mknod /dev/scullpipe3 c $major 7
+	ln -sf scullpipe0 /dev/scullpipe
+	chgrp staff /dev/scullpipe[0-3]
+	chmod 664 /dev/scullpipe[0-3]
+
+	rm -f /dev/scullsingle
+	mknod /dev/scullsingle  c $major 8
+	chgrp staff /dev/scullsingle
+	chmod 664 /dev/scullsingle
+
+	rm -f /dev/sculluid
+	mknod /dev/sculluid   c $major 9
+	chgrp staff /dev/sculluid
+	chmod 664 /dev/sculluid
+
+	rm -f /dev/scullwuid
+	mknod /dev/scullwuid  c $major 10
+	chgrp staff /dev/scullwuid
+	chmod 664 /dev/scullwuid
+
+	rm -f /dev/scullpriv
+	mknod /dev/scullpriv  c $major 11
+	chgrp staff /dev/scullpriv
+	chmod 664 /dev/scullpriv
+
+	echo "Loading faulty driver"
+	modprobe faulty
+
+	# retrieve major number
+	major=$(awk "\$2==\"faulty\" {print \$1}" /proc/devices)
+	echo "faulty major number $major"
+	rm -f /dev/faulty
+	mknod /dev/faulty c $major 0
+	chgrp staff /dev/faulty
+	chmod 664 /dev/faulty
+
+	echo "Loading hello module"
+	modprobe hello
+	;;
+    stop)
+	echo "Unloading hello module"
+	rmmod hello
+
+	echo "Unloading faulty driver"
+	rmmod faulty
+	rm -f /dev/faulty
+
+	echo "Unloading scull driver"
+	rmmod scull
+
+	# Remove stale nodes
+	rm -f /dev/scullull /dev/scull[0-3]
+	rm -f /dev/scullpriv
+	rm -f /dev/scullpipe /dev/scullpipe[0-3]
+	rm -f /dev/scullsingle
+	rm -f /dev/sculluid
+	rm -f /dev/scullwuid
+	;;
+    *)
+	echo "Usage: $0 {start|stop}"
+	exit 1
+esac
+
+exit 0
