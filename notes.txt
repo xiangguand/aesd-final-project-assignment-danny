@@ -1,0 +1,32 @@
+
+
+### How to use u-boot command to load linux kernel image to dram
+print boot command
+```bash
+printenv bootcmd
+```
+
+Load Linux image from SDC to dram via u-boot command
+```bash
+fatload mmc 0:1 ${kernel_addr_r} Image
+```
+
+```bash
+fatload mmc 0:1 ${fdt_addr_r} bcm2710-rpi-3-b-plus.dtb
+```
+
+```bash
+booti ${kernel_addr_r} - ${fdt_addr_r}
+```
+
+```bash
+# go to SDC root
+mkdir -p {bin,dev,etc,home,lib64,proc,sbin,sys,tmp,usr,var}
+mkdir -p usr/{bin,lib,sbin}
+mkdir -p var/log
+```
+
+### defconfig buildroot
+make -C buildroot defconfig BR2_EXTERNAL=../base_external BR2_DEFCONFIG=../base_external/configs/xg_project_defconfig
+
+
