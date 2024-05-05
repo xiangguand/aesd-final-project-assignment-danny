@@ -1,0 +1,5 @@
+
+config BR2_PACKAGE_AESD_APP
+	bool "app"
+	help
+	  AESD Final Project APP

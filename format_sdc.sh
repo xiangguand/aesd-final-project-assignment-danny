@@ -2,8 +2,8 @@
 #Author: Xiang Guan Deng.
 
 
-BOOT_PART=/dev/sdb1
-ROOTFS_PART=/dev/sdb2
+BOOT_PART=/dev/sda1
+ROOTFS_PART=/dev/sda2
 
 
 sudo mkfs.vfat $BOOT_PART
