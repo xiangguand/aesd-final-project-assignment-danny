@@ -1,5 +1,5 @@
 
-config BR2_PACKAGE_AESD_ASSIGNMENTS
+config BR2_PACKAGE_AESD_FINAL
 	bool "aesd-assignments"
 	help
 	  AESD Final Project

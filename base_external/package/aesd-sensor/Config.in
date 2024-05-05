@@ -1,0 +1,5 @@
+
+config BR2_PACKAGE_AESD_SENSOR
+	bool "sensor"
+	help
+	  AESD Final Project Sensor Driver
